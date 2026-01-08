@@ -230,12 +230,9 @@ body {
 
 /* PCUI theme color overrides - green instead of orange */
 .pcui-button:hover,
-.pcui-button:focus {
-    box-shadow: 0 0 2px 1px rgba(0, 204, 102, 0.3) !important;
-}
-
+.pcui-button:focus,
 .pcui-button:active {
-    box-shadow: 0 0 0 1px rgba(0, 204, 102, 0.3) !important;
+    box-shadow: none !important;
 }
 
 .pcui-panel > .pcui-panel-header > .pcui-panel-header-title {
@@ -250,12 +247,9 @@ body {
     color: #0c6 !important;
 }
 
-.pcui-element:focus {
-    box-shadow: 0 0 2px 1px rgba(0, 204, 102, 0.3) !important;
-}
-
+.pcui-element:focus,
 .pcui-element:active {
-    box-shadow: 0 0 0 1px rgba(0, 204, 102, 0.3) !important;
+    box-shadow: none !important;
 }
 
 // Label selectable hover state
@@ -272,6 +266,13 @@ body {
 // Numeric input slider active state
 .pcui-numeric-input-slider-control::after {
     background: #0c6 !important;
+}
+
+// Remove all focus/active outlines
+*:focus,
+*:active {
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 .font-thin {
