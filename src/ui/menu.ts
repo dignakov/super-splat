@@ -81,11 +81,6 @@ class Menu extends Container {
             class: 'menu-option'
         });
 
-        const help = new Label({
-            text: localize('menu.help'),
-            class: 'menu-option'
-        });
-
         const toggleCollapsed = () => {
             document.body.classList.toggle('collapsed');
         };
@@ -111,7 +106,6 @@ class Menu extends Container {
         buttonsContainer.append(scene);
         buttonsContainer.append(selection);
         buttonsContainer.append(render);
-        buttonsContainer.append(help);
         buttonsContainer.append(collapse);
         buttonsContainer.append(arrow);
 
@@ -256,64 +250,12 @@ class Menu extends Container {
             onSelect: async () => await events.invoke('show.videoSettingsDialog')
         }]);
 
-        const videoTutorialsMenuPanel = new MenuPanel([{
-            text: localize('menu.help.video-tutorials.basics'),
-            icon: 'E261',
-            onSelect: () => window.open('https://youtu.be/MwzaEM2I55I', '_blank')?.focus()
-        }, {
-            text: localize('menu.help.video-tutorials.in-depth'),
-            icon: 'E261',
-            onSelect: () => window.open('https://youtu.be/J37rTieKgJ8', '_blank')?.focus()
-        }]);
-
-        const helpMenuPanel = new MenuPanel([{
-            text: localize('menu.help.video-tutorials'),
-            icon: 'E261',
-            subMenu: videoTutorialsMenuPanel
-        }, {
-            text: localize('menu.help.user-guide'),
-            icon: 'E232',
-            onSelect: () => window.open('https://developer.playcanvas.com/user-manual/gaussian-splatting/editing/supersplat/', '_blank')?.focus()
-        }, {
-            text: localize('menu.help.shortcuts'),
-            icon: 'E136',
-            onSelect: () => events.fire('show.shortcuts')
-        }, {
-            // separator
-        }, {
-            text: localize('menu.help.discord'),
-            icon: 'E233',
-            onSelect: () => window.open('https://discord.gg/T3pnhRTTAY', '_blank')?.focus()
-        }, {
-            text: localize('menu.help.forum'),
-            icon: 'E432',
-            onSelect: () => window.open('https://forum.playcanvas.com', '_blank')?.focus()
-        }, {
-            // separator
-        }, {
-            text: localize('menu.help.github-repo'),
-            icon: 'E259',
-            onSelect: () => window.open('https://github.com/playcanvas/supersplat', '_blank')?.focus()
-        }, {
-            text: localize('menu.help.log-issue'),
-            icon: 'E336',
-            onSelect: () => window.open('https://github.com/playcanvas/supersplat/issues', '_blank')?.focus()
-        }, {
-            // separator
-        }, {
-            text: localize('menu.help.about'),
-            icon: 'E138',
-            onSelect: () => events.invoke('show.about')
-        }]);
-
         this.append(menubar);
         this.append(fileMenuPanel);
         this.append(openRecentMenuPanel);
         this.append(exportMenuPanel);
         this.append(selectionMenuPanel);
         this.append(renderMenuPanel);
-        this.append(videoTutorialsMenuPanel);
-        this.append(helpMenuPanel);
 
         const options: { dom: HTMLElement, menuPanel: MenuPanel }[] = [{
             dom: scene.dom,
@@ -324,9 +266,6 @@ class Menu extends Container {
         }, {
             dom: render.dom,
             menuPanel: renderMenuPanel
-        }, {
-            dom: help.dom,
-            menuPanel: helpMenuPanel
         }];
 
         options.forEach((option) => {
