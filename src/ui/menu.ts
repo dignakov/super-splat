@@ -4,8 +4,6 @@ import { Events } from '../events';
 import { recentFiles } from '../recent-files';
 import { localize } from './localization';
 import { MenuPanel, MenuItem } from './menu-panel';
-import arrowSvg from './svg/arrow.svg';
-import collapseSvg from './svg/collapse.svg';
 import selectDelete from './svg/delete.svg';
 import sceneExport from './svg/export.svg';
 import sceneImport from './svg/import.svg';
@@ -71,43 +69,16 @@ class Menu extends Container {
             class: 'menu-option'
         });
 
-        const render = new Label({
-            text: localize('menu.render'),
-            class: 'menu-option'
-        });
-
         const selection = new Label({
             text: localize('menu.select'),
             class: 'menu-option'
         });
-
-        const toggleCollapsed = () => {
-            document.body.classList.toggle('collapsed');
-        };
-
-        // collapse menu on mobile
-        if (document.body.clientWidth < 600) {
-            toggleCollapsed();
-        }
-
-        const collapse = createSvg(collapseSvg);
-        collapse.dom.classList.add('menu-icon');
-        collapse.dom.setAttribute('id', 'menu-collapse');
-        collapse.dom.addEventListener('click', toggleCollapsed);
-
-        const arrow = createSvg(arrowSvg);
-        arrow.dom.classList.add('menu-icon');
-        arrow.dom.setAttribute('id', 'menu-arrow');
-        arrow.dom.addEventListener('click', toggleCollapsed);
 
         const buttonsContainer = new Container({
             id: 'menu-bar-options'
         });
         buttonsContainer.append(scene);
         buttonsContainer.append(selection);
-        buttonsContainer.append(render);
-        buttonsContainer.append(collapse);
-        buttonsContainer.append(arrow);
 
         menubar.append(buttonsContainer);
 
@@ -240,22 +211,11 @@ class Menu extends Container {
             onSelect: () => events.fire('select.separate')
         }]);
 
-        const renderMenuPanel = new MenuPanel([{
-            text: localize('menu.render.image', { ellipsis: true }),
-            icon: createSvg(sceneExport),
-            onSelect: async () => await events.invoke('show.imageSettingsDialog')
-        }, {
-            text: localize('menu.render.video', { ellipsis: true }),
-            icon: createSvg(sceneExport),
-            onSelect: async () => await events.invoke('show.videoSettingsDialog')
-        }]);
-
         this.append(menubar);
         this.append(fileMenuPanel);
         this.append(openRecentMenuPanel);
         this.append(exportMenuPanel);
         this.append(selectionMenuPanel);
-        this.append(renderMenuPanel);
 
         const options: { dom: HTMLElement, menuPanel: MenuPanel }[] = [{
             dom: scene.dom,
@@ -263,9 +223,6 @@ class Menu extends Container {
         }, {
             dom: selection.dom,
             menuPanel: selectionMenuPanel
-        }, {
-            dom: render.dom,
-            menuPanel: renderMenuPanel
         }];
 
         options.forEach((option) => {

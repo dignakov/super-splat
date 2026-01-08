@@ -20,7 +20,6 @@ import { Spinner } from './spinner';
 import { Tooltips } from './tooltips';
 import { VideoSettingsDialog } from './video-settings-dialog';
 import { ViewPanel } from './view-panel';
-import { version } from '../../package.json';
 
 // ts compiler and vscode find this type, but eslint does not
 type FilePickerAcceptType = unknown;
@@ -67,12 +66,6 @@ class EditorUI {
         // canvas
         const canvas = document.createElement('canvas');
         canvas.id = 'canvas';
-
-        // app label
-        const appLabel = new Label({
-            id: 'app-label',
-            text: `SUPERSPLAT v${version}`
-        });
 
         // cursor label
         const cursorLabel = new Label({
@@ -123,7 +116,6 @@ class EditorUI {
         const menu = new Menu(events);
 
         canvasContainer.dom.appendChild(canvas);
-        canvasContainer.append(appLabel);
         canvasContainer.append(cursorLabel);
         canvasContainer.append(toolsContainer);
         canvasContainer.append(viewPanel);
@@ -298,14 +290,6 @@ class EditorUI {
                     });
                 }
             }
-        });
-
-        events.function('show.about', () => {
-            return this.popup.show({
-                type: 'info',
-                header: 'About',
-                message: `SUPERSPLAT v${version}`
-            });
         });
 
         events.function('showPopup', (options: ShowOptions) => {
