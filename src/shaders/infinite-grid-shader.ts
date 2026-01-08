@@ -34,15 +34,6 @@ const fragmentShader = /* glsl*/ `
         vec4(0.0, 0.0, 1.0, 0.0)
     );
 
-    vec3 colors[3] = vec3[3](
-        vec3(1.0, 0.2, 0.2),
-        vec3(0.2, 1.0, 0.2),
-        vec3(0.2, 0.2, 1.0)
-    );
-
-    int axis0[3] = int[3](1, 0, 0);
-    int axis1[3] = int[3](2, 2, 1);
-
     varying vec3 worldNear;
     varying vec3 worldFar;
 
@@ -124,32 +115,28 @@ const fragmentShader = /* glsl*/ `
         float levelSize;
         float levelAlpha;
 
-        // 10m grid with colored main axes
-        levelPos = pos * 0.1;
-        levelSize = 2.0 / 1000.0;
-        levelAlpha = pristineGrid(levelPos, ddx * 0.1, ddy * 0.1, vec2(levelSize)) * fade;
+        // 5m grid with colored axis lines (X = pastel red, Z = pastel green)
+        levelPos = pos * 0.2;
+        levelSize = 1.0 / 1000.0;
+        levelAlpha = pristineGrid(levelPos, ddx * 0.2, ddy * 0.2, vec2(levelSize)) * fade;
         if (levelAlpha > epsilon) {
-            vec3 color;
+            vec3 color = vec3(0.9);
             vec2 loc = abs(levelPos);
-            if (loc.x < levelSize) {
-                if (loc.y < levelSize) {
-                    color = vec3(1.0);
-                } else {
-                    color = colors[axis1[plane]];
-                }
-            } else if (loc.y < levelSize) {
-                color = colors[axis0[plane]];
-            } else {
-                color = vec3(0.9);
+            if (loc.x < levelSize && loc.y >= levelSize) {
+                // Z axis - pastel green
+                color = vec3(0.6, 0.85, 0.6);
+            } else if (loc.y < levelSize && loc.x >= levelSize) {
+                // X axis - pastel red
+                color = vec3(0.9, 0.6, 0.6);
             }
             gl_FragColor = vec4(color, levelAlpha);
             gl_FragDepth = writeDepth(levelAlpha) ? calcDepth(worldPos) : 1.0;
             return;
         }
 
-        // 1m grid
+        // 1m grid (major lines)
         levelPos = pos;
-        levelSize = 1.0 / 100.0;
+        levelSize = 0.5 / 100.0;
         levelAlpha = pristineGrid(levelPos, ddx, ddy, vec2(levelSize)) * fade;
         if (levelAlpha > epsilon) {
             gl_FragColor = vec4(vec3(0.7), levelAlpha);
@@ -157,10 +144,10 @@ const fragmentShader = /* glsl*/ `
             return;
         }
 
-        // 0.1m grid
-        levelPos = pos * 10.0;
+        // minor lines (3 per major)
+        levelPos = pos * 3.0;
         levelSize = 1.0 / 100.0;
-        levelAlpha = pristineGrid(levelPos, ddx * 10.0, ddy * 10.0, vec2(levelSize)) * fade;
+        levelAlpha = pristineGrid(levelPos, ddx * 3.0, ddy * 3.0, vec2(levelSize)) * fade;
         if (levelAlpha > epsilon) {
             gl_FragColor = vec4(vec3(0.7), levelAlpha);
             gl_FragDepth = writeDepth(levelAlpha) ? calcDepth(worldPos) : 1.0;

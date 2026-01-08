@@ -20,7 +20,6 @@ import { ShortcutsPopup } from './shortcuts-popup';
 import { Spinner } from './spinner';
 import { Tooltips } from './tooltips';
 import { VideoSettingsDialog } from './video-settings-dialog';
-import { ViewCube } from './view-cube';
 import { ViewPanel } from './view-panel';
 import { version } from '../../package.json';
 
@@ -136,13 +135,6 @@ class EditorUI {
         canvasContainer.append(rightToolbar);
         canvasContainer.append(modeToggle);
         canvasContainer.append(menu);
-
-        // view axes container
-        const viewCube = new ViewCube(events);
-        canvasContainer.append(viewCube);
-        events.on('prerender', (cameraMatrix: Mat4) => {
-            viewCube.update(cameraMatrix);
-        });
 
         // main container
         const mainContainer = new Container({
