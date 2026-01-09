@@ -13,15 +13,6 @@
         <!-- jszip -->
         <script src="jszip.js"></script>
 
-        <!-- Service worker -->
-        <script>
-            const sw = navigator.serviceWorker;
-            if (sw) {
-                sw.register('./sw.js')
-                    .then(reg => console.log('service worker registered', reg))
-                    .catch(err => console.log('failed to register service worker', err));
-            }
-        </script>
     </head>
 
     <body>
