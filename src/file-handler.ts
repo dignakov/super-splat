@@ -499,7 +499,8 @@ const initFileHandler = (scene: Scene, events: Events, dropTarget: HTMLElement) 
     events.function('scene.export', async (exportType: 'ply' | 'splat' | 'viewer') => {
         const splats = getSplats();
 
-        const hasFilePicker = !!window.showSaveFilePicker;
+        // DDDDDDD const hasFilePicker = !!window.showSaveFilePicker;
+        const hasFilePicker = false;
 
         // show viewer export options
         const options = await events.invoke('show.exportPopup', exportType, splats.map(s => s.name), !hasFilePicker) as SceneExportOptions;
